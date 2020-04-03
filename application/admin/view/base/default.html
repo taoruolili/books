@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图书管理系统</title>
+    {block name="css"}
+    <link rel="stylesheet" href="./static/css/bootstrap.min.css">
+    <link href="./static/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./static/css/home.css">
+    <link rel="stylesheet" href="./static/css/booklending.css">
+    {/block}
+    {block name="js"}
+    <script src="./static/js/jquery-2.1.1.min.js"></script>
+    <script src="./static/js/popper.min.js"></script>
+    <script src="./static/js/bootstrap.min.js"></script>
+    <script src="./static/js/moment-with-locales.js"></script>
+    <script src="./static/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="./static/js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="./static/js/booklending.js"></script>
+    {/block}
+</head>
+<style>
+    body {
+        margin:  0;
+        padding: 0;
+    }
+</style>
+<body>
+<div class="content">
+    <div class="hide">
+        <div class="rounded-left">
+            <div class="tablefttop"><a href="/">图书管理系统</a></div>
+            <div class=" dropdown-toggle li1 "  id="kai">
+                流通管理
+            </div>
+            <div class="li2"><a href="/gobooks_index">图书借阅</a></div>
+            <div class="li2"><a href="/backbooks_index">图书归还</a></div>
+            <div class=" li1"><a href="/book_index">图书管理</a></div>
+            <div class=" li1"><a href="/student_index">读者管理</a></div>
+            <div class=" li1"><a href="/count_index">统计管理</a></div>
+            <div class=" li1 active1"><a href="/user_index">管理员</a></div>
+        </div>
+        <div class="rounded-right">
+            <div class="rounded-shang">
+                <a class="loginout" href="javascript:;" id="tuichu" style="color: rgb(129,129,129);"><img  src="./static/images/dele.png" alt=""><span>退出</span></a>
+            </div>
+            {block name="main"}
+
+            {/block}
+            <div class="ceng"></div>
+            <div class="mask">
+                <p class="p1">借阅信息</p>
+                <div class="list">
+                    <div style="float:left;width: 50%;">
+                        <span class="modele">借书日期</span>
+                        <div class='input-group date' style="width: 12em;" id='datetimepicker4'>
+                            <input type='text' class="timeInput form-control" placeholder="请选择日期"/>
+                            <span class="input-group-addon">
+                            <img  style="width: 20px;height: 20px;margin: 7.5px;" src="./static/images/qi.png" alt="">
+					        </span>
+                        </div>
+                    </div>
+                    <div style="float:left;width: 50%;">
+                        <span class="modele">归还日期</span>
+                        <div class='input-group date' style="width: 12em;" id='datetimepicker5'>
+                            <input type='text' class="timeInput form-control" placeholder="请选择日期"/>
+                            <span class="input-group-addon">
+                            <img  style="width: 20px;height: 20px;margin: 7.5px;" src="./static/images/qi.png" alt="">
+					        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="list">
+                    <div style="width: 50%;float:left;"><span class="modele">借阅学号</span><input type="text"  style="width: 60%;" class="nameinput" placeholder="请输入学号"></div>
+                    <div style="width: 50%;float:left;"><span class="modele">借 阅 人&nbsp;&nbsp;</span><input type="text"  style="width: 60%;" class="nameinput" placeholder="请输入姓名"></div>
+                </div>
+                <div class="list">
+                    <div style="width: 50%;float:left;"><span class="modele">图书编号</span><input type="text"  style="width: 60%;" class="nameinput" placeholder="请输入编号"></div>
+                    <div style="width: 50%;float:left;"><span class="modele">图书名称</span><input type="text"  style="width: 60%;" class="nameinput" placeholder="请输入书名"></div>
+                </div>
+                <div class="list">
+                    <span class="spp2" >确认</span>
+                    <span class="spp1" style="background-color: rgba(255,222,0,1); color: rgb(129,129,129)">取消</span>
+                </div>
+            </div>
+            <div class="mask2">
+                <p class="p1">归还信息</p>
+                <div class="list">
+                    <span class="ze bcaite" id="0">正常</span>
+                    <span class="ze" id="1">损坏</span>
+                    <span class="ze" id="2">丢失</span>
+                </div>
+                <p class="p1">备注</p>
+                <textarea class="shick" name="" id="" cols="30" rows="10" placeholder="请填写备注信息"></textarea>
+                <div class="list">
+                    <span class="spp3" style="background-color: rgba(255,222,0,1);color: rgb(129,129,129)">取消</span>
+                    <span class="spp4" >确认</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    $(function(){
+        $("#tuichu").click(function () {
+            //利用对话框返回的值 （true 或者 false）
+            if (confirm("您确定退出么？")) {
+                $.ajax({
+                    type:'get',
+                    url:'/lgout',
+                    dataType:'json',
+                    async:'true', //默认值: true。默认设置下，所有请求均为异步请求。如果需要发送同步请求，请将此选项设置为 false。
+                    success:function(data) {    //这里的data是ajax发送请求后返回的数据
+                        if(data.code == 200){
+                            window.location.href="/login";
+                        }
+                    },
+                    error:function() {
+                        //失败信息
+                        console.info('退出错误');
+                    },
+                });
+            }
+        })
+    });
+</script>
+</html>

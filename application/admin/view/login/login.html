@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登陆</title>
+    <link rel="stylesheet" href="./static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./static/css/login.css">
+    <script src="./static/js/jquery-2.1.1.min.js"></script>
+    <script src="./static/js/popper.min.js"></script>
+    <script src="./static/js/bootstrap.min.js"></script>
+</head>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+</style>
+<body>
+<div class="content">
+    <img  class="img1" src="./static/images/bei.png" alt="">
+    <div class="dele">
+        <p class="p1">用户登陆</p>
+        <form style="width: 85%;margin: 0 auto;" id="form1" action="/do_login" method="post">
+            <div class="form-group">
+                <label style="font-size: 17px;">账号</label>
+                {if isset($_COOKIE['u_account'])}
+                <input type="tel" class="form-control" required value="{$_COOKIE['u_account']}" name="u_account" aria-describedby="emailHelp">
+                {else /}
+                <input type="tel" class="form-control u_account" required name="u_account" aria-describedby="emailHelp">
+                {/if}
+            </div>
+            <div class="form-group">
+                <label style="font-size: 17px;">密码</label>
+                {if isset($_COOKIE['u_pass'])}
+                <input type="password" class="form-control" value="{$_COOKIE['u_pass']}" name="u_pass" required >
+                {else /}
+                <input type="password" class="form-control u_pass" name="u_pass" required >
+                {/if}
+            </div>
+            <div class="form-group form-check chack">
+                {if isset($_COOKIE['repass'])}
+                <input type="checkbox" class="form-check-input" checked name="repass" style="margin-top: 8px;">
+                {else /}
+                <input type="checkbox" class="form-check-input" name="repass"  style="margin-top: 8px;">
+                {/if}
+                <label class="form-check-label" style="font-size: 17px;">记住密码</label>
+            </div>
+            <button  class="btnmit">立即登陆</button>
+        </form>
+    </div>
+
+</div>
+<script>
+    $('.content').css("width",document.documentElement.clientWidth);
+    $('.content').css("height",document.documentElement.clientHeight);
+
+    // $('.btnmit').click(function () {
+    //     // var jsonData = $("#form1").serializeArray();
+    //     // console.log();
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "/do_login", //orderModifyStatus
+    //         data: {"u_account":$(".u_account").val(),"u_pass":$("input[name='u_pass']")},
+    //         dataType:"json",
+    //         async:false,
+    //         cache:false,
+    //         success: function(data){
+    //             alert(data)
+    //         },
+    //         error: function(json){
+    //             alert("失败。。");
+    //         }
+    //     });
+    // })
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,134 @@
+{extend name="base/default"}
+{block name="css"}
+<link rel="stylesheet" href="./static/css/bootstrap.min.css">
+<link href="./static/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="./static/css/home.css">
+<link rel="stylesheet" href="./static/css/booklending.css">
+{/block}
+{block name="js"}
+<script src="./static/js/jquery-2.1.1.min.js"></script>
+<script src="./static/js/popper.min.js"></script>
+<script src="./static/js/bootstrap.min.js"></script>
+<script src="./static/js/moment-with-locales.js"></script>
+<script src="./static/js/bootstrap-datetimepicker.min.js"></script>
+<script src="./static/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="./static/js/admin.js"></script>
+{/block}
+{block name="main"}
+<div class="rounded-xia">
+    <form action="user_index" method="get">
+    <div class="row">
+        <div class="col-4">
+            <span class="modele">账号</span>
+            <input type="text"  class="nameinput" name="u_account" placeholder="请输入账号">
+        </div>
+        <div class="col-4">
+            <span class="modele">职位</span>
+            <input type="text"  class="nameinput" name="u_post" placeholder="请输入职位">
+        </div>
+        <div class="col-2">
+            <button><div class="Inquire">查询</div></button>
+        </div>
+        <div class="col-2">
+            <div  class="addlengding" >添加管理员</div>
+        </div>
+    </div>
+    </form>
+    <table class="table" style="margin-top: 20px;">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">序号</th>
+            <th scope="col">账号</th>
+            <th scope="col">职位</th>
+            <th scope="col">添加时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $data as $v}
+        <tr>
+            <td>{$v['u_id']}</td>
+            <td>{$v['u_account']}</td>
+            <td>{$v['u_post']}</td>
+            <td>{$v['created_at']}</td>
+            <td>
+                <a class="sp1" id="edit">修改</a>
+                <a class="sp1" style="background:#f56c6c;color: white" onclick="del(this)" u_id="{$v['u_id']}" id="del">删除</a>
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    <div style="width: 100%;margin: 0 auto;">
+        {$data|raw}
+        <span class="xiazai">下载</span>
+    </div>
+
+</div>
+<div class="mask">
+    <p class="p1">管理信息</p>
+    <div class="list">
+        <div style="float:left;width: 50%;">
+            <span class="modele">借书日期</span>
+            <div class='input-group date' style="width: 12em;" id='datetimepicker4'>
+                <input type='text' class="timeInput form-control" placeholder="请选择日期"/>
+                <span class="input-group-addon">
+                            <img  style="width: 20px;height: 20px;margin: 7.5px;" src="./static/images/qi.png" alt="">
+					        </span>
+            </div>
+        </div>
+        <div style="float:left;width: 50%;">
+            <span class="modele">归还日期</span>
+            <div class='input-group date' style="width: 12em;" id='datetimepicker5'>
+                <input type='text' class="timeInput form-control" placeholder="请选择日期"/>
+                <span class="input-group-addon">
+                            <img  style="width: 20px;height: 20px;margin: 7.5px;" src="./static/images/qi.png" alt="">
+					        </span>
+            </div>
+        </div>
+    </div>
+    <div class="list">
+        <div style="width: 50%;float:left;"><span class="modele">借阅学号</span><input type="text"  style="width: 60%;" class="nameinput" placeholder="请输入学号"></div>
+        <div style="width: 50%;float:left;"><span class="modele">借 阅 人&nbsp;&nbsp;</span><input type="text"  style="width: 60%;" class="nameinput" placeholder="请输入姓名"></div>
+    </div>
+    <div class="list">
+        <div style="width: 50%;float:left;"><span class="modele">图书编号</span><input type="text"  style="width: 60%;" class="nameinput" placeholder="请输入编号"></div>
+        <div style="width: 50%;float:left;"><span class="modele">图书名称</span><input type="text"  style="width: 60%;" class="nameinput" placeholder="请输入书名"></div>
+    </div>
+    <div class="list">
+        <span class="spp2" >确认</span>
+        <span class="spp1" style="background-color: rgba(255,222,0,1); color: rgb(129,129,129)">取消</span>
+    </div>
+</div>
+<script>
+    function del(objInfo){
+        if (confirm("您确定删除么？")) {
+            //获取u_id
+            var id = $(objInfo).attr("u_id");
+            $.ajax({
+                type:'get',
+                url:'/user_delete/'+id,
+                dataType:'json',
+                async:'true', //默认值: true。默认设置下，所有请求均为异步请求。如果需要发送同步请求，请将此选项设置为 false。
+                success:function(data) {   //这里的data是ajax发送请求后返回的数据
+                    if(data.code == 200){
+                        alert(data.status);
+                        window.location.href="/user_index";
+                    }else if(data.code == 400){
+                        alert(data.status);
+                        window.location.href="/user_index";
+                    }else{
+                        alert('网络错误，删除失败');
+                        window.location.href="/user_index";
+                    }
+                },
+                error:function() {
+                    //失败信息
+                    console.info('删除失败');
+                },
+            });
+        }
+    }
+
+</script>
+{/block}

@@ -1,0 +1,51 @@
+{extend name="base/default"}
+
+{block name="main"}
+<div class="rounded-xia">
+    <div class="row">
+        <div class="col-3">
+            <input type="text" class="nameinput" placeholder="请输入图书分类名称">
+            <div style="margin-right: 20px;background-color: rgba(0,182,166,1);
+                                line-height: 35px;
+                                text-align:center;
+                                border-radius:7px;
+                                width: 96px;
+                                color: rgb(225,255,255);
+                                font-size: 16px;
+                                cursor: pointer;
+                                float: right;
+                            ">添加分类</div>
+        </div>
+        <div class="col-3">
+
+        </div>
+        <div class="col-3">
+
+        </div>
+        <div class="col-3">
+            <div class="addlengding">单独添加</div>
+            <div class="addlengding2" style="margin-right: 20px;">批量添加</div>
+        </div>
+    </div>
+    <table class="table" style="margin-top: 20px;">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">图书编号</th>
+            <th scope="col">图书类别</th>
+            <th scope="col">图书名称</th>
+            <th scope="col">图书库存</th>
+            <th scope="col">图书单价</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+            <td>Mark</td>
+            <td>Otto</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+{/block}

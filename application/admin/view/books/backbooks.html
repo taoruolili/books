@@ -1,0 +1,89 @@
+{extend name="base/default"}
+{block name="main"}
+<div class="rounded-xia">
+    <div class="row">
+        <div class="col-3">
+            <span class="modele">借书日期</span>
+            <div class="input-group date" style="width: auto;" id="datetimepicker2">
+                <input type="text" class="timeInput form-control" placeholder="请选择日期">
+                <span class="input-group-addon">
+                            <img style="width: 20px;height: 20px;margin: 7.5px;" src="./images/qi.png" alt="">
+					        </span>
+            </div>
+        </div>
+        <div class="col-3">
+            <span class="modele">归还日期</span>
+            <div class="input-group date" style="width: auto;" id="datetimepicker3">
+                <input type="text" class="timeInput form-control" placeholder="请选择日期">
+                <span class="input-group-addon">
+                            <img style="width: 20px;height: 20px;margin: 7.5px;" src="./images/qi.png" alt="">
+					        </span>
+            </div>
+        </div>
+        <div class="col-3">
+            <span class="modele">借阅人</span>
+            <input type="text" class="nameinput" placeholder="请输入姓名">
+        </div>
+        <div class="col-3">
+            <div class="Inquire">查询</div>
+        </div>
+
+    </div>
+    <table class="table" style="margin-top: 20px;">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">借书日期</th>
+            <th scope="col">图书编号</th>
+            <th scope="col">图书类别</th>
+            <th scope="col">图书名称</th>
+            <th scope="col">借阅人</th>
+            <th scope="col">借阅电话</th>
+            <th scope="col">归还日期</th>
+            <th scope="col">图书状态</th>
+            <th scope="col">备注</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+            <td>Mark</td>
+            <td>
+                <span class="sp1" id="shick">损坏</span>
+            </td>
+            <td>Mark</td>
+        </tr>
+        <tr>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+            <td>Mark</td>
+            <td>
+                <span class="sp1">归还</span>
+            </td>
+            <td>Mark</td>
+        </tr>
+        <tr>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+            <td>Mark</td>
+            <td>
+                <span class="sp1">丢失</span>
+            </td>
+            <td>Mark</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+{/block}

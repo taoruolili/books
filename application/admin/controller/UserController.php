@@ -6,6 +6,7 @@ use think\Controller;
 use think\Request;
 use \app\admin\model\User;
 use think\Session;
+use think\Cookie;
 
 class UserController extends Controller
 {
@@ -17,8 +18,23 @@ class UserController extends Controller
     public function index()
     {
         //管理员列表
-        $data = User::paginate(1);
-        var_dump($data->toArray());
+        //判断有没有搜索条件
+        if(isset($_GET['u_account']) && !empty($_GET['u_account'])){
+            $where['u_account'] = $_GET['u_account'];
+        }else{
+            $where['u_account'] = [];
+        }
+        if(isset($_GET['u_post']) && !empty($_GET['u_post'])){
+            $where['u_post'] = $_GET['u_post'];
+        }else{
+            $where['u_post'] = [];
+        }
+        //去除空搜索条件
+        $where = array_filter($where);
+        //查询数据库
+        $data = User::where($where)->paginate(3);
+        // 把分页数据赋值给模板变量list
+        return view('admin/index',['data'=>$data]);
     }
 
     /**
@@ -58,9 +74,8 @@ class UserController extends Controller
             $_POST['created_at'] = date("Y-m-d H:i",time());
             //密码加密
             $_POST['u_pass'] = md5($_POST['u_pass']);
-            $user = new User;
-            // 过滤post数组中的非数据表字段数据
-            $res = $user->save($_POST);
+            // 执行添加
+            $res = User::create($_POST);
             if($res){
                 return '添加成功';
             }
@@ -126,10 +141,9 @@ class UserController extends Controller
             //密码加密
             if(md5($_POST['u_pass']) == $old['u_pass']){
                 $_POST['u_pass'] = $old['u_pass'];
-            }else{
+            }else {
                 $_POST['u_pass'] = md5($_POST['u_pass']);
             }
-            $_POST['u_pass'] = md5($_POST['u_pass']);
             //执行修改
             $res = User::where('u_id', $id)->update($_POST);
             if($res){
@@ -152,12 +166,12 @@ class UserController extends Controller
         try{
             //系统默认添加id为1的管理员不能删除
             if($id == 1){
-                return '系统默认添加管理员不能删除';
+                return ['status'=>'系统默认管理员不能删除','code'=>400];
             }
             //删除
-            $res = User::delete($id);
+            $res = User::destroy($id);
             if($res){
-                return '删除成功';
+                return ['status'=>'删除成功','code'=>200];
             }
         }catch (\Exception $e) {
             echo $e->getMessage();
@@ -166,19 +180,37 @@ class UserController extends Controller
     }
 
     /**
- * 登录
- *
- */
-    public function login(Request $request)
+     * 显示登录页面
+     */
+    public function login(){
+        return view('login/login');
+    }
+
+     /**
+     * 执行登录
+     *
+     */
+    public function do_login(Request $request)
     {
         //接收账号和密码
         $u_account = $request->post()['u_account'];
         $u_pass = $request->post()['u_pass'];
+        //判断用户是否记住密码
+        if(isset($request->post()['repass'])){
+            //设置记住密码  默认保存30天
+            $cookie = new Cookie();
+            $cookie->set('u_account',$u_account,30);
+            $cookie->set('u_pass',$u_pass,30);
+            $cookie->set('repass','on',30);
+        }
+        //die;
         //判断账号和密码是否为空
         if(empty($u_account)){
+            $this->error('账号不能为空');
             return '账号不能为空';
         }
         if(empty($u_pass)){
+            $this->error('密码不能为空');
             return '密码不能为空';
         }
         //密码加密
@@ -186,13 +218,15 @@ class UserController extends Controller
         //用账号和密码查询对应数据
         $user = User::where('u_account', $u_account)->where('u_pass',$u_pass)->find();
         if(empty($user)) {
+            $this->error('账号或密码不正确');
             return '账号或密码不正确';
         }
         // 将用户账号存入session
         $session = new Session();
         $session->set('u_account',$u_account);
         //登录成功
-        return '成功';
+        $this->success('登录成功','/user_index');
+        return redirect('/user_index');
     }
 
     /**
@@ -204,6 +238,6 @@ class UserController extends Controller
         // 清空session中账号u_account
         $session = new Session();
         $session->delete('u_account');
-        return '退出';
+        return ['status'=>'退出成功','code'=>200];
     }
 }
